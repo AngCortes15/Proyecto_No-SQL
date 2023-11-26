@@ -22,177 +22,136 @@ def main_menu():
     for key in mm_options.keys():
         print(key, '--', mm_options[key])
     option = int(input("Select an option: "))
-    return option
-
-MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
-DB_NAME = os.getenv('MONGODB_DB_NAME', 'iteso')
-
-app = FastAPI()
-
-@app.on_event("startup")
-def startup_db_client():
-    app.mongodb_client = MongoClient(MONGODB_URI)
-    app.database = app.mongodb_client[DB_NAME]
-    print(f"Connected to MongoDB at: {MONGODB_URI} \n\t Database: {DB_NAME}")
-
-@app.on_event("shutdown")
-def shutdown_db_client():
-    app.mongodb_client.close()
-    print("Hasta la vista, baby!")
-
-#app.include_router(book_router, tags=["books"], prefix="/book")
-
-## DGraph
-
-DGRAPH_URI = os.getenv('DGRAPH_URI', 'localhost:9080')
-
-def print_menu():
-    mm_options = {
-        1: "Create data",
-        2: "Search person",
-        3: "Delete person",
-        4: "Drop All",
-        5: "Exit",
-    }
-    for key in mm_options.keys():
-        print(key, '--', mm_options[key])
-
-
-def create_client_stub():
-    return pydgraph.DgraphClientStub(DGRAPH_URI)
-
-
-def create_client(client_stub):
-    return pydgraph.DgraphClient(client_stub)
-
-
-def close_client_stub(client_stub):
-    client_stub.close()
-
-
-def main():
-    # Init Client Stub and Dgraph Client
-    client_stub = create_client_stub()
-    client = create_client(client_stub)
-
-    # Create schema
-    model.set_schema(client)
-    while(True):
-        print_menu()
-        option = int(input('Enter your choice: '))
+    while option != 4:
         if option == 1:
-            model.create_data(client)
+            cassandra_menu()
         if option == 2:
-            person = input("Name: ")
-            model.search_person(client, person)
+            mongo_menu()
         if option == 3:
-            person = input("Name: ")
-            model.delete_person(client, person)
-        if option == 4:
-            model.drop_all(client)
-        if option == 5:
-            model.drop_all(client)
-            close_client_stub(client_stub)
-            exit(0)
+            dgraph_menu()
+        option = int(input("Select an option: "))
+
+def cassandra_menu():
+    ## Cassandr
+    # Set logger
+    log = logging.getLogger()
+    log.setLevel('INFO')
+    handler = logging.FileHandler('cassandra.log')
+    handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s"))
+    log.addHandler(handler)
+
+    # Read env vars releated to Cassandra App
+    CLUSTER_IPS = os.getenv('CASSANDRA_CLUSTER_IPS', 'localhost')
+    KEYSPACE = os.getenv('CASSANDRA_KEYSPACE', 'proyecto')
+    REPLICATION_FACTOR = os.getenv('CASSANDRA_REPLICATION_FACTOR', '1')
 
 
-if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        print('Error: {}'.format(e))
+    def print_menu():
+        mm_options = {
+            1: "Show recommended airports",
+            2: "Show all airports",
+            3: "Exit",
+        }
+        for key in mm_options.keys():
+            print(key, '--', mm_options[key])
 
 
-## Cassandra
+    def main_cassandra():
+        log.info("Connecting to Cluster")
+        cluster = Cluster(CLUSTER_IPS.split(','))
+        session = cluster.connect()
 
-# Set logger
-log = logging.getLogger()
-log.setLevel('INFO')
-handler = logging.FileHandler('investments.log')
-handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s"))
-log.addHandler(handler)
+        cassandra_model.create_keyspace(session, KEYSPACE, REPLICATION_FACTOR)
+        session.set_keyspace(KEYSPACE)
 
-# Read env vars releated to Cassandra App
-CLUSTER_IPS = os.getenv('CASSANDRA_CLUSTER_IPS', 'localhost')
-KEYSPACE = os.getenv('CASSANDRA_KEYSPACE', 'investments')
-REPLICATION_FACTOR = os.getenv('CASSANDRA_REPLICATION_FACTOR', '1')
+        cassandra_model.create_schema(session)
 
 
-def print_menu():
-    mm_options = {
-        1: "Show accounts",
-        2: "Show positions",
-        3: "Show trade history",
-        4: "Change username",
-        5: "Exit",
-    }
-    for key in mm_options.keys():
-        print(key, '--', mm_options[key])
+        while(True):
+            print_menu()
+            option = int(input('Enter your choice: '))
+            if option == 1:
+                cassandra_model.get_airports_food_service(session)
+            if option == 2:
+                cassandra_model.get_all_airports_passengers(session)
+            if option == 3:
+                exit(0)
+    
+    main_cassandra()
 
 
-def print_trade_history_menu():
-    thm_options = {
-        1: "All",
-        2: "Date Range",
-        3: "Transaction Type (Buy/Sell)",
-        4: "Instrument Symbol",
-    }
-    for key in thm_options.keys():
-        print('    ', key, '--', thm_options[key])
+def mongo_menu():
+    MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+    DB_NAME = os.getenv('MONGODB_DB_NAME', 'iteso')
+
+    app = FastAPI()
+
+    @app.on_event("startup")
+    def startup_db_client():
+        app.mongodb_client = MongoClient(MONGODB_URI)
+        app.database = app.mongodb_client[DB_NAME]
+        print(f"Connected to MongoDB at: {MONGODB_URI} \n\t Database: {DB_NAME}")
+
+    @app.on_event("shutdown")
+    def shutdown_db_client():
+        app.mongodb_client.close()
+        print("Hasta la vista, baby!")
+    #app.include_router(book_router, tags=["books"], prefix="/book")
 
 
-def set_username():
-    username = input('**** Username to use app: ')
-    log.info(f"Username set to {username}")
-    return username
+def dgraph_menu():
+    ## DGraph
+
+    DGRAPH_URI = os.getenv('DGRAPH_URI', 'localhost:9080')
+
+    def print_menu():
+        mm_options = {
+            1: "Create data",
+            2: "Search person",
+            3: "Delete person",
+            4: "Drop All",
+            5: "Exit",
+        }
+        for key in mm_options.keys():
+            print(key, '--', mm_options[key])
 
 
-def get_instrument_value(instrument):
-    instr_mock_sum = sum(bytearray(instrument, encoding='utf-8'))
-    return random.uniform(1.0, instr_mock_sum)
+    def create_client_stub():
+        return pydgraph.DgraphClientStub(DGRAPH_URI)
 
 
-def main():
-    log.info("Connecting to Cluster")
-    cluster = Cluster(CLUSTER_IPS.split(','))
-    session = cluster.connect()
+    def create_client(client_stub):
+        return pydgraph.DgraphClient(client_stub)
 
-    model.create_keyspace(session, KEYSPACE, REPLICATION_FACTOR)
-    session.set_keyspace(KEYSPACE)
 
-    model.create_schema(session)
+    def close_client_stub(client_stub):
+        client_stub.close()
 
-    username = set_username()
 
-    while(True):
-        print_menu()
-        option = int(input('Enter your choice: '))
-        if option == 1:
-            model.get_user_accounts(session, username)
-        if option == 2:
-            account_number = input('Enter account number: ')
-            model.get_user_positions(session, account_number)
-        if option == 3:
-            print_trade_history_menu()
-            account_number = input('Enter account number: ')
-            tv_option = int(input('Enter your trade view choice: '))
-            if tv_option == 1:
-                model.get_trade_history_all(session, account_number)
-            if tv_option == 2:
-                date1 = input('Enter Date 1: ')
-                date2 = input('Enter Date 2: ')
-                model.get_trade_history_date(session, account_number, date1, date2)
-            if tv_option == 3:
-                t = input('Enter transaction type (Buy/Sell): ')
-                model.get_trade_history_type(session, account_number, t)
-            if tv_option == 4:
-                symbol = input('Enter instrument symbol: ')
-                model.get_trade_history_symbol(session, account_number, symbol)
-        if option == 4:
-            username = set_username()
-        if option == 5:
-            exit(0)
+    def main():
+        # Init Client Stub and Dgraph Client
+        client_stub = create_client_stub()
+        client = create_client(client_stub)
 
+        # Create schema
+        model.set_schema(client)
+        while(True):
+            print_menu()
+            option = int(input('Enter your choice: '))
+            if option == 1:
+                model.create_data(client)
+            if option == 2:
+                person = input("Name: ")
+                model.search_person(client, person)
+            if option == 3:
+                person = input("Name: ")
+                model.delete_person(client, person)
+            if option == 4:
+                model.drop_all(client)
+            if option == 5:
+                model.drop_all(client)
+                close_client_stub(client_stub)
+                exit(0)
 
 if __name__ == '__main__':
     main_menu()

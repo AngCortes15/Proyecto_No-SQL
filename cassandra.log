@@ -1,0 +1,46 @@
+2023-11-25 23:06:38,155 [INFO] root: Connecting to Cluster
+2023-11-25 23:06:38,159 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-25 23:06:38,175 [WARNING] cassandra.cluster: Downgrading core protocol version from 66 to 65 for 127.0.0.1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:06:38,179 [WARNING] cassandra.cluster: Downgrading core protocol version from 65 to 5 for 127.0.0.1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:06:38,202 [INFO] cassandra.policies: Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '127.0.0.1:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2023-11-25 23:06:38,203 [INFO] cassandra.cluster: Cassandra host ::1:9042 removed
+2023-11-25 23:06:38,223 [INFO] root: Creating keyspace: proyecto with replication factor 1
+2023-11-25 23:06:38,228 [INFO] root: Creating model schema
+2023-11-25 23:06:40,156 [INFO] root: Retrieving airports with food service
+2023-11-25 23:06:40,178 [WARNING] cassandra.protocol: Server warning: `USE <keyspace>` with prepared statements is considered to be an anti-pattern due to ambiguity in non-qualified table names. Please consider removing instances of `Session#setKeyspace(<keyspace>)`, `Session#execute("USE <keyspace>")` and `cluster.newSession(<keyspace>)` from your code, and always use fully qualified table names (e.g. <keyspace>.<table>). Keyspace used: proyecto, statement keyspace: proyecto, statement id: 8e1d82ea436b6c92321b73119b3457c6
+2023-11-25 23:06:57,560 [INFO] root: Connecting to Cluster
+2023-11-25 23:06:57,565 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-25 23:06:57,576 [WARNING] cassandra.cluster: Downgrading core protocol version from 66 to 65 for 127.0.0.1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:06:57,581 [WARNING] cassandra.cluster: Downgrading core protocol version from 65 to 5 for 127.0.0.1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:06:57,597 [INFO] cassandra.policies: Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '127.0.0.1:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2023-11-25 23:06:57,597 [INFO] cassandra.cluster: Cassandra host ::1:9042 removed
+2023-11-25 23:06:57,621 [INFO] root: Creating keyspace: proyecto with replication factor 1
+2023-11-25 23:06:57,625 [INFO] root: Creating model schema
+2023-11-25 23:06:59,541 [INFO] root: Retrieving airports with food service
+2023-11-25 23:07:41,057 [INFO] root: Connecting to Cluster
+2023-11-25 23:07:41,063 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-25 23:07:41,072 [WARNING] cassandra.cluster: Downgrading core protocol version from 66 to 65 for ::1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:07:41,076 [WARNING] cassandra.cluster: Downgrading core protocol version from 65 to 5 for ::1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:07:41,090 [INFO] cassandra.policies: Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '::1:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2023-11-25 23:07:41,090 [INFO] cassandra.cluster: Cassandra host 127.0.0.1:9042 removed
+2023-11-25 23:07:41,114 [INFO] root: Creating keyspace: proyecto with replication factor 1
+2023-11-25 23:07:41,119 [INFO] root: Creating model schema
+2023-11-25 23:07:41,830 [INFO] root: Retrieving airports with food service
+2023-11-25 23:07:44,063 [INFO] root: Retrieving all airports with passengers
+2023-11-25 23:07:44,074 [ERROR] cassandra.cluster: Error preparing query:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 3088, in cassandra.cluster.Session.prepare
+  File "cassandra/cluster.py", line 4920, in cassandra.cluster.ResponseFuture.result
+cassandra.protocol.SyntaxException: <Error from server: code=2000 [Syntax error in CQL query] message="line 6:4 mismatched input 'ALLOW' expecting EOF (... 360    GROUP BY destination;    [ALLOW]...)">
+2023-11-25 23:08:50,918 [INFO] root: Connecting to Cluster
+2023-11-25 23:08:50,923 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-25 23:08:50,939 [WARNING] cassandra.cluster: Downgrading core protocol version from 66 to 65 for 127.0.0.1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:08:50,943 [WARNING] cassandra.cluster: Downgrading core protocol version from 65 to 5 for 127.0.0.1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-25 23:08:50,983 [INFO] cassandra.policies: Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '127.0.0.1:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2023-11-25 23:08:50,983 [INFO] cassandra.cluster: Cassandra host ::1:9042 removed
+2023-11-25 23:08:51,009 [INFO] root: Creating keyspace: proyecto with replication factor 1
+2023-11-25 23:08:51,012 [INFO] root: Creating model schema
+2023-11-25 23:08:51,894 [INFO] root: Retrieving all airports with passengers
+2023-11-25 23:08:51,915 [WARNING] cassandra.protocol: Server warning: `USE <keyspace>` with prepared statements is considered to be an anti-pattern due to ambiguity in non-qualified table names. Please consider removing instances of `Session#setKeyspace(<keyspace>)`, `Session#execute("USE <keyspace>")` and `cluster.newSession(<keyspace>)` from your code, and always use fully qualified table names (e.g. <keyspace>.<table>). Keyspace used: proyecto, statement keyspace: proyecto, statement id: 0f4302e80aae4b283f742fff6542bf60
+2023-11-25 23:08:51,921 [WARNING] cassandra.protocol: Server warning: Aggregation query used without partition key
+2023-11-25 23:08:53,353 [INFO] root: Retrieving airports with food service

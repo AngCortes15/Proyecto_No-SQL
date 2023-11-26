@@ -30,10 +30,24 @@ CREATE_FLIGHTS_DATA_TABLE = """
     ) with clustering order by (connection ASC, wait ASC);
 """
 
+CREATE_DESTINATION_COUNTS = """
+    CREATE TABLE IF NOT EXISTS destination_counts (
+        destination text PRIMARY KEY,
+        passengers int
+    );
+"""
+
 SELECT_AIRPORTS_FOOD_SERVICE = """
-    SELECT destination, count(*) as passengers
+    SELECT destination
+    FROM destination_counts
+    WHERE passengers > 3
+    ALLOW FILTERING;
+"""
+
+SELECT_ALL_AIRPORTS_PASSENGERS = """
+    SELECT destination, COUNT(*) as passengers
     FROM flights_data
-    WHERE connection = true AND wait > 60 and wait < 360
+    WHERE connection = True and wait > 60 and wait < 360
     GROUP BY destination
     ALLOW FILTERING;
 """
@@ -47,6 +61,7 @@ def create_keyspace(session, keyspace, replication_factor):
 def create_schema(session):
     log.info("Creating model schema")
     session.execute(CREATE_FLIGHTS_DATA_TABLE)
+    session.execute(CREATE_DESTINATION_COUNTS)
 
 
 def get_airports_food_service(session):
@@ -55,19 +70,14 @@ def get_airports_food_service(session):
     rows = session.execute(stmt)
     for row in rows:
         print(f"=== Airport: {row.destination} ===")
-        print(f"- Connections: {row.destination_count}")
+        
 
-
-def get_trade_history_date(session, account, date1, date2):
-    log.info(f"Retrieving {account} all trades between {date1} and {date2}")
-    stmt = session.prepare(SELECT_TRADE_HISTORY_DATE_RANGE)
-    rows = session.execute(stmt, [account, date1, date2])
+def get_all_airports_passengers(session):
+    log.info("Retrieving all airports with passengers")
+    stmt = session.prepare(SELECT_ALL_AIRPORTS_PASSENGERS)
+    rows = session.execute(stmt)
     for row in rows:
-        print(f"=== Account: {row.account} ===")
-        print(f"- Trade ID: {row.trade_id}")
-        print(f"- Type: {row.type}")
-        print(f"- Symbol: {row.symbol}")
-        print(f"- Shares: {row.shares}")
-        print(f"- Price: {row.price}")
-        print(f"- Amount: {row.amount}")
+        print(f"=== Airport: {row.destination} ===")
+        print(f"- # of Passengers: {row.passengers}")
+
 
