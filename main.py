@@ -134,25 +134,29 @@ def dgraph_menu():
         client = create_client(client_stub)
 
         # Create schema
-        model.set_schema(client)
+        dgraph_model.set_schema(client)
         while(True):
             print_menu()
             option = int(input('Enter your choice: '))
             if option == 1:
-                model.create_data(client)
+                dgraph_model.create_data(client)
             if option == 2:
                 person = input("Name: ")
-                model.search_person(client, person)
+                dgraph_model.search_person(client, person)
             if option == 3:
                 person = input("Name: ")
-                model.delete_person(client, person)
+                dgraph_model.delete_person(client, person)
             if option == 4:
-                model.drop_all(client)
+                dgraph_model.drop_all(client)
             if option == 5:
-                model.drop_all(client)
+                dgraph_model.drop_all(client)
                 close_client_stub(client_stub)
                 exit(0)
+    main();
 
 if __name__ == '__main__':
-    main_menu()
+    try:
+        main_menu()
+    except Exception as e:
+        print('Error: {}'.format(e))
     #main()
