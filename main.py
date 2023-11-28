@@ -11,6 +11,10 @@ from cassandra_section import model as cassandra_model
 from fastapi import FastAPI
 from pymongo import MongoClient
 from mongo_section import routes as mongo_routes
+from pymongo import MongoClient
+import pprint
+
+app = FastAPI()
 
 def main_menu():
     mm_options = {
@@ -29,6 +33,8 @@ def main_menu():
             mongo_menu()
         if option == 3:
             dgraph_menu()
+        for key in mm_options.keys():
+            print(key, '--', mm_options[key])
         option = int(input("Select an option: "))
 
 def cassandra_menu():
@@ -66,38 +72,82 @@ def cassandra_menu():
 
         cassandra_model.create_schema(session)
 
+        option = 1
 
-        while(True):
+        while(option != 3):
             print_menu()
             option = int(input('Enter your choice: '))
             if option == 1:
                 cassandra_model.get_airports_food_service(session)
             if option == 2:
                 cassandra_model.get_all_airports_passengers(session)
-            if option == 3:
-                exit(0)
     
     main_cassandra()
 
 
 def mongo_menu():
-    MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
-    DB_NAME = os.getenv('MONGODB_DB_NAME', 'iteso')
+    mom_options = {
+        1: "Recomendacion de mes por aeropuerto",
+        2: "Mostrar todos los aeropuertos",
+        3: "Borrar datos",
+        4: "Exit",
+    }
+    mongo_client = MongoClient("localhost:27017")
+    db = mongo_client.iteso
+    collection = db.airports
+    months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembe', 'Octubre', 'Noviembre', 'Diciembre']
+    for key in mom_options.keys():
+        print(key, '--', mom_options[key])
+    option = int(input("Select an option: "))
+    while option != 4:
+        if option == 1:
+            query = [
+                {
+                    "$group": {"_id": {"month": "$month", "destination": "$destination"}, "total": { "$sum": 1 } }
+                },
+                {
+                    "$match": { "total": { "$gt": 4 } }
+                }
+            ]
+            airports_months = {}
+            for i in collection.aggregate(query):
+                month = i['_id']['month']
+                airport = i['_id']['destination']
+                total = i['total']
+                if airports_months.get(airport) != None:
+                    airports_months[airport].append(month)
+                else:
+                    airports_months[airport] = [month]
+            for j in airports_months:
+                for x in airports_months[j]:
+                    print(f'Para el aeropuerto {j} los meses recomendados son: {months[x]}')
+        if option == 2:
+            query = [
+                {
+                    "$group": {"_id": {"month": "$month", "destination": "$destination"}, "total": { "$sum": 1 } }
+                }
+            ]
+            airports_months = {}
+            for i in collection.aggregate(query):
+                if len(i['_id']) != 0:
+                    month = i['_id']['month']
+                    airport = i['_id']['destination']
+                    total = i['total']
+                    if airports_months.get(airport) != None:
+                        airports_months[airport].append(month)
+                    else:
+                        airports_months[airport] = [month]
+            for j in airports_months:
+                print(f'Para el aeropuerto {j} los meses con pasajeros son:', end= " ")
+                for x in airports_months[j]:
+                    print(f'{months[x - 1]} ', end= " ")
+                print()
+        if option == 3:
+            collection.delete_many({})
 
-    app = FastAPI()
-
-    @app.on_event("startup")
-    def startup_db_client():
-        app.mongodb_client = MongoClient(MONGODB_URI)
-        app.database = app.mongodb_client[DB_NAME]
-        print(f"Connected to MongoDB at: {MONGODB_URI} \n\t Database: {DB_NAME}")
-
-    @app.on_event("shutdown")
-    def shutdown_db_client():
-        app.mongodb_client.close()
-        print("Hasta la vista, baby!")
-    #app.include_router(book_router, tags=["books"], prefix="/book")
-
+        for key in mom_options.keys():
+            print(key, '--', mom_options[key])
+        option = int(input("Select an option: "))
 
 def dgraph_menu():
     ## DGraph
@@ -155,4 +205,3 @@ def dgraph_menu():
 
 if __name__ == '__main__':
     main_menu()
-    #main()
