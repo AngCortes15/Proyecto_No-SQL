@@ -247,6 +247,7 @@ def buscarTodos(client):
     ppl = json.loads(res.json)
 
     # Print results.
+    print(f"Number of people in the airline : {len(ppl['all'])}")
     print(f"Data associated with:\n{json.dumps(ppl, indent=2)}")
 
 def drop_all(client):
