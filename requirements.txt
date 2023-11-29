@@ -5,3 +5,4 @@ fastapi[all]
 pydantic
 pymongo
 requests
+pandas

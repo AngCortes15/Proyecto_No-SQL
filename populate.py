@@ -12,5 +12,16 @@
 """
 
 # MongoDB
+"""
+1.- Create MongoDB Container in Docker
+2.- Create Database iteso; use iteso
+3.- Create Collection: db.createCollection("airports")
+4.- Copy flights.csv from host to container: docker cp flights.csv mongo:/flights.csv
+5.- Conect to mongo container: docker exec -it mongo bash
+6.- mongoimport --type csv --headerline --db iteso --collection airports --file /flights.csv
+"""
 
 # DQL
+"""
+1.- Create Dgraph Container in Docker
+"""

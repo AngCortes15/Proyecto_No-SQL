@@ -52,6 +52,14 @@ SELECT_ALL_AIRPORTS_PASSENGERS = """
     ALLOW FILTERING;
 """
 
+SELECT_PASSENGERS_PER_AIRPORT = """
+    SELECT destination, COUNT(*) as passengers
+    FROM flights_data
+    WHERE connection = True and wait > 60 and wait < 360 and destination = ?
+    GROUP BY destination
+    ALLOW FILTERING;
+"""
+
 
 def create_keyspace(session, keyspace, replication_factor):
     log.info(f"Creating keyspace: {keyspace} with replication factor {replication_factor}")
@@ -69,7 +77,7 @@ def get_airports_food_service(session):
     stmt = session.prepare(SELECT_AIRPORTS_FOOD_SERVICE)
     rows = session.execute(stmt)
     for row in rows:
-        print(f"=== Airport: {row.destination} ===")
+        print(f"=== Aeropuerto recomendado para abrir servicio de comida: {row.destination} ===")
         
 
 def get_all_airports_passengers(session):
@@ -77,7 +85,15 @@ def get_all_airports_passengers(session):
     stmt = session.prepare(SELECT_ALL_AIRPORTS_PASSENGERS)
     rows = session.execute(stmt)
     for row in rows:
-        print(f"=== Airport: {row.destination} ===")
-        print(f"- # of Passengers: {row.passengers}")
+        print(f"=== Aeropuerto: {row.destination} ===")
+        print(f"- # de pasajeros: {row.passengers}")
 
+def get_passengers_per_airport(session):
+    print("Aeropuertos disponibles: ")
+    print("GDL, JFK, LAX, PDX, SJC")
+    ap = input("Ingrese el aeropuerto: ")
+    stmt = session.prepare(SELECT_PASSENGERS_PER_AIRPORT)
+    rows = session.execute(stmt, [ap])
+    for row in rows:
+        print(f"- # de pasajeros que hicieron conexion: {row.passengers}")
 

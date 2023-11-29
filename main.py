@@ -9,10 +9,7 @@ from cassandra.cluster import Cluster
 from dgraph_section import model as dgraph_model
 from cassandra_section import model as cassandra_model
 from fastapi import FastAPI
-from pymongo import MongoClient
-from mongo_section import routes as mongo_routes
-from pymongo import MongoClient
-import pprint
+from mongo_section import model as mongo_model
 
 app = FastAPI()
 
@@ -56,7 +53,8 @@ def cassandra_menu():
         mm_options = {
             1: "Show recommended airports",
             2: "Show all airports",
-            3: "Exit",
+            3: "Show passengers per airport",
+            4: "Exit",
         }
         for key in mm_options.keys():
             print(key, '--', mm_options[key])
@@ -74,13 +72,15 @@ def cassandra_menu():
 
         option = 1
 
-        while(option != 3):
+        while(option != 4):
             print_menu()
             option = int(input('Enter your choice: '))
             if option == 1:
                 cassandra_model.get_airports_food_service(session)
             if option == 2:
                 cassandra_model.get_all_airports_passengers(session)
+            if option == 3:
+                cassandra_model.get_passengers_per_airport(session)
     
     main_cassandra()
 
@@ -89,78 +89,39 @@ def mongo_menu():
     mom_options = {
         1: "Recomendacion de mes por aeropuerto",
         2: "Mostrar todos los aeropuertos",
-        3: "Borrar datos",
+        3: "Visitantes durante el a año de un aeropuerto",
         4: "Exit",
     }
-    mongo_client = MongoClient("localhost:27017")
-    db = mongo_client.iteso
-    collection = db.airports
-    months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembe', 'Octubre', 'Noviembre', 'Diciembre']
+    
     for key in mom_options.keys():
         print(key, '--', mom_options[key])
     option = int(input("Select an option: "))
     while option != 4:
         if option == 1:
-            query = [
-                {
-                    "$group": {"_id": {"month": "$month", "destination": "$destination"}, "total": { "$sum": 1 } }
-                },
-                {
-                    "$match": { "total": { "$gt": 4 } }
-                }
-            ]
-            airports_months = {}
-            for i in collection.aggregate(query):
-                month = i['_id']['month']
-                airport = i['_id']['destination']
-                total = i['total']
-                if airports_months.get(airport) != None:
-                    airports_months[airport].append(month)
-                else:
-                    airports_months[airport] = [month]
-            for j in airports_months:
-                for x in airports_months[j]:
-                    print(f'Para el aeropuerto {j} los meses recomendados son: {months[x]}')
+            mongo_model.get_recomendations_all()
         if option == 2:
-            query = [
-                {
-                    "$group": {"_id": {"month": "$month", "destination": "$destination"}, "total": { "$sum": 1 } }
-                }
-            ]
-            airports_months = {}
-            for i in collection.aggregate(query):
-                if len(i['_id']) != 0:
-                    month = i['_id']['month']
-                    airport = i['_id']['destination']
-                    total = i['total']
-                    if airports_months.get(airport) != None:
-                        airports_months[airport].append(month)
-                    else:
-                        airports_months[airport] = [month]
-            for j in airports_months:
-                print(f'Para el aeropuerto {j} los meses con pasajeros son:', end= " ")
-                for x in airports_months[j]:
-                    print(f'{months[x - 1]} ', end= " ")
-                print()
+            mongo_model.get_all_months_airports()
         if option == 3:
-            collection.delete_many({})
+            mongo_model.visitors_through_year_in_airport()
 
         for key in mom_options.keys():
             print(key, '--', mom_options[key])
         option = int(input("Select an option: "))
 
 def dgraph_menu():
-    ## DGraph
+   ## DGraph
 
     DGRAPH_URI = os.getenv('DGRAPH_URI', 'localhost:9080')
 
     def print_menu():
         mm_options = {
             1: "Create data",
-            2: "Search person",
-            3: "Delete person",
+            2: "Search person by age",
+            3: "Delete person by id",
             4: "Drop All",
-            5: "Exit",
+            5: "Search Airline flights",
+            6: "Search all airlines",
+            7: "Exit"
         }
         for key in mm_options.keys():
             print(key, '--', mm_options[key])
@@ -178,30 +139,36 @@ def dgraph_menu():
         client_stub.close()
 
 
-    def main():
+    def main_dgraph():
         # Init Client Stub and Dgraph Client
         client_stub = create_client_stub()
         client = create_client(client_stub)
 
         # Create schema
-        model.set_schema(client)
-        while(True):
+        dgraph_model.set_schema(client)
+        option = 1
+        while(option != 7):
             print_menu()
             option = int(input('Enter your choice: '))
             if option == 1:
-                model.create_data(client)
+                dgraph_model.create_data(client)
             if option == 2:
-                person = input("Name: ")
-                model.search_person(client, person)
+                person = input("Introduce age: ")
+                dgraph_model.search_person(client, person)
             if option == 3:
-                person = input("Name: ")
-                model.delete_person(client, person)
+                person = input("Introduce id: ")
+                dgraph_model.delete_person(client, person)
+            if option == 6:
+                dgraph_model.buscarTodos(client)
             if option == 4:
-                model.drop_all(client)
+                dgraph_model.drop_all(client)
             if option == 5:
-                model.drop_all(client)
-                close_client_stub(client_stub)
-                exit(0)
+                person = input("Introduce airline: ")
+                dgraph_model.buscarAirline(client, person)
+        dgraph_model.drop_all(client)
+        close_client_stub(client_stub)
+                
+    main_dgraph()
 
 if __name__ == '__main__':
     main_menu()
