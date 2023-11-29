@@ -98,3 +98,75 @@ Traceback (most recent call last):
   File "cassandra/cluster.py", line 3507, in cassandra.cluster.ControlConnection.connect
   File "cassandra/cluster.py", line 3552, in cassandra.cluster.ControlConnection._reconnect_internal
 cassandra.cluster.NoHostAvailable: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionRefusedError(111, "Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused")})
+2023-11-27 17:20:36,594 [INFO] root: Connecting to Cluster
+2023-11-27 17:20:36,613 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-27 17:20:36,617 [WARNING] cassandra.cluster: [control connection] Error connecting to 127.0.0.1:9042:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 3541, in cassandra.cluster.ControlConnection._reconnect_internal
+  File "cassandra/cluster.py", line 3563, in cassandra.cluster.ControlConnection._try_connect
+  File "cassandra/cluster.py", line 1630, in cassandra.cluster.Cluster.connection_factory
+  File "cassandra/connection.py", line 850, in cassandra.connection.Connection.factory
+  File "/home/user/.local/lib/python3.10/site-packages/cassandra/io/asyncorereactor.py", line 347, in __init__
+    self._connect_socket()
+  File "cassandra/connection.py", line 917, in cassandra.connection.Connection._connect_socket
+ConnectionRefusedError: [Errno 111] Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused
+2023-11-27 17:20:36,618 [ERROR] cassandra.cluster: Control connection failed to connect, shutting down Cluster:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 1700, in cassandra.cluster.Cluster.connect
+  File "cassandra/cluster.py", line 3507, in cassandra.cluster.ControlConnection.connect
+  File "cassandra/cluster.py", line 3552, in cassandra.cluster.ControlConnection._reconnect_internal
+cassandra.cluster.NoHostAvailable: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionRefusedError(111, "Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused")})
+2023-11-27 17:33:19,233 [INFO] root: Connecting to Cluster
+2023-11-27 17:33:19,234 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-27 17:33:19,235 [WARNING] cassandra.cluster: [control connection] Error connecting to 127.0.0.1:9042:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 3541, in cassandra.cluster.ControlConnection._reconnect_internal
+  File "cassandra/cluster.py", line 3563, in cassandra.cluster.ControlConnection._try_connect
+  File "cassandra/cluster.py", line 1630, in cassandra.cluster.Cluster.connection_factory
+  File "cassandra/connection.py", line 850, in cassandra.connection.Connection.factory
+  File "/home/user/.local/lib/python3.10/site-packages/cassandra/io/asyncorereactor.py", line 347, in __init__
+    self._connect_socket()
+  File "cassandra/connection.py", line 917, in cassandra.connection.Connection._connect_socket
+ConnectionRefusedError: [Errno 111] Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused
+2023-11-27 17:33:19,236 [ERROR] cassandra.cluster: Control connection failed to connect, shutting down Cluster:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 1700, in cassandra.cluster.Cluster.connect
+  File "cassandra/cluster.py", line 3507, in cassandra.cluster.ControlConnection.connect
+  File "cassandra/cluster.py", line 3552, in cassandra.cluster.ControlConnection._reconnect_internal
+cassandra.cluster.NoHostAvailable: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionRefusedError(111, "Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused")})
+2023-11-28 08:18:27,541 [INFO] root: Connecting to Cluster
+2023-11-28 08:18:27,557 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-28 08:18:27,562 [WARNING] cassandra.cluster: [control connection] Error connecting to 127.0.0.1:9042:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 3541, in cassandra.cluster.ControlConnection._reconnect_internal
+  File "cassandra/cluster.py", line 3563, in cassandra.cluster.ControlConnection._try_connect
+  File "cassandra/cluster.py", line 1630, in cassandra.cluster.Cluster.connection_factory
+  File "cassandra/connection.py", line 850, in cassandra.connection.Connection.factory
+  File "/home/user/.local/lib/python3.10/site-packages/cassandra/io/asyncorereactor.py", line 347, in __init__
+    self._connect_socket()
+  File "cassandra/connection.py", line 917, in cassandra.connection.Connection._connect_socket
+ConnectionRefusedError: [Errno 111] Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused
+2023-11-28 08:18:27,563 [ERROR] cassandra.cluster: Control connection failed to connect, shutting down Cluster:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 1700, in cassandra.cluster.Cluster.connect
+  File "cassandra/cluster.py", line 3507, in cassandra.cluster.ControlConnection.connect
+  File "cassandra/cluster.py", line 3552, in cassandra.cluster.ControlConnection._reconnect_internal
+cassandra.cluster.NoHostAvailable: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionRefusedError(111, "Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused")})
+2023-11-29 07:44:29,287 [INFO] root: Connecting to Cluster
+2023-11-29 07:44:29,329 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-29 07:44:29,334 [WARNING] cassandra.cluster: [control connection] Error connecting to 127.0.0.1:9042:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 3541, in cassandra.cluster.ControlConnection._reconnect_internal
+  File "cassandra/cluster.py", line 3563, in cassandra.cluster.ControlConnection._try_connect
+  File "cassandra/cluster.py", line 1630, in cassandra.cluster.Cluster.connection_factory
+  File "cassandra/connection.py", line 850, in cassandra.connection.Connection.factory
+  File "/home/user/.local/lib/python3.10/site-packages/cassandra/io/asyncorereactor.py", line 347, in __init__
+    self._connect_socket()
+  File "cassandra/connection.py", line 917, in cassandra.connection.Connection._connect_socket
+ConnectionRefusedError: [Errno 111] Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused
+2023-11-29 07:44:29,335 [ERROR] cassandra.cluster: Control connection failed to connect, shutting down Cluster:
+Traceback (most recent call last):
+  File "cassandra/cluster.py", line 1700, in cassandra.cluster.Cluster.connect
+  File "cassandra/cluster.py", line 3507, in cassandra.cluster.ControlConnection.connect
+  File "cassandra/cluster.py", line 3552, in cassandra.cluster.ControlConnection._reconnect_internal
+cassandra.cluster.NoHostAvailable: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionRefusedError(111, "Tried connecting to [('127.0.0.1', 9042)]. Last error: Connection refused")})

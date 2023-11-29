@@ -107,10 +107,12 @@ def dgraph_menu():
     def print_menu():
         mm_options = {
             1: "Create data",
-            2: "Search person",
-            3: "Delete person",
+            2: "Search person by age",
+            3: "Delete person by id",
             4: "Drop All",
             5: "Exit",
+            6: "Search Airline flights",
+            7: "Search all airlines"
         }
         for key in mm_options.keys():
             print(key, '--', mm_options[key])
@@ -141,13 +143,18 @@ def dgraph_menu():
             if option == 1:
                 dgraph_model.create_data(client)
             if option == 2:
-                person = input("Name: ")
+                person = input("Introduce age: ")
                 dgraph_model.search_person(client, person)
             if option == 3:
-                person = input("Name: ")
+                person = input("Introduce id: ")
                 dgraph_model.delete_person(client, person)
+            if option == 6:
+                person = input("Introduce airline: ")
+                dgraph_model.buscarAirline(client, person)
             if option == 4:
                 dgraph_model.drop_all(client)
+            if option == 7:
+                dgraph_model.buscarTodos(client)
             if option == 5:
                 dgraph_model.drop_all(client)
                 close_client_stub(client_stub)
