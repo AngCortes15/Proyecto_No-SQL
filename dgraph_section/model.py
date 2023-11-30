@@ -5,7 +5,7 @@ import json
 
 import pydgraph
 
-
+ 
 
 def set_schema(client):
     schema = """
@@ -230,10 +230,10 @@ def buscar(client, name):
     print(f"Number of people in the airline {name}: {len(ppl['all'])}")
     print(f"Data associated with {name}:\n{json.dumps(ppl, indent=2)}")
 
-def buscarTodos(client):
-    query = """{
+def buscarTodos(client, first_month, last_month):
+    query = """query search_by_month($a: int, $b: int){
         all(func: has(age)) {
-            flight @filter(eq(month, 12) OR eq(month, 1)) {
+            flight @filter(eq(month, $a) OR eq(month, $b)) {
                 count(airline)
                 airline
                 origin
@@ -242,8 +242,8 @@ def buscarTodos(client):
                 }
             }
         }"""
-
-    res = client.txn(read_only=True).query(query)
+    variables = {'$a': first_month, '$b': last_month}
+    res = client.txn(read_only=True).query(query, variables=variables)
     ppl = json.loads(res.json)
 
     # Print results.

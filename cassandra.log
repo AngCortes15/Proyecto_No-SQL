@@ -128,3 +128,14 @@ cassandra.protocol.SyntaxException: <Error from server: code=2000 [Syntax error 
 2023-11-28 16:40:46,653 [INFO] root: Retrieving all airports with passengers
 2023-11-28 16:40:46,674 [WARNING] cassandra.protocol: Server warning: Aggregation query used without partition key
 2023-11-28 16:41:05,099 [INFO] root: Retrieving airports with food service
+2023-11-29 20:22:48,857 [INFO] root: Connecting to Cluster
+2023-11-29 20:22:48,859 [WARNING] cassandra.cluster: Cluster.__init__ called with contact_points specified, but no load_balancing_policy. In the next major version, this will raise an error; please specify a load-balancing policy. (contact_points = ['localhost'], lbp = None)
+2023-11-29 20:22:48,877 [WARNING] cassandra.cluster: Downgrading core protocol version from 66 to 65 for ::1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-29 20:22:48,881 [WARNING] cassandra.cluster: Downgrading core protocol version from 65 to 5 for ::1:9042. To avoid this, it is best practice to explicitly set Cluster(protocol_version) to the version supported by your cluster. http://datastax.github.io/python-driver/api/cassandra/cluster.html#cassandra.cluster.Cluster.protocol_version
+2023-11-29 20:22:48,911 [INFO] cassandra.policies: Using datacenter 'datacenter1' for DCAwareRoundRobinPolicy (via host '::1:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2023-11-29 20:22:48,912 [INFO] cassandra.cluster: Cassandra host 127.0.0.1:9042 removed
+2023-11-29 20:22:48,930 [INFO] root: Creating keyspace: proyecto with replication factor 1
+2023-11-29 20:22:48,934 [INFO] root: Creating model schema
+2023-11-29 20:22:53,803 [INFO] root: Retrieving airports with food service
+2023-11-29 20:23:02,467 [INFO] root: Retrieving all airports with passengers
+2023-11-29 20:23:02,482 [WARNING] cassandra.protocol: Server warning: Aggregation query used without partition key

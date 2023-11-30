@@ -30,6 +30,10 @@ CREATE_FLIGHTS_DATA_TABLE = """
     ) with clustering order by (connection ASC, wait ASC);
 """
 
+COPY_DATA_FROM_CSV = """
+    COPY flights_data FROM '/home/data.csv' WITH HEADER=TRUE;
+"""
+
 CREATE_DESTINATION_COUNTS = """
     CREATE TABLE IF NOT EXISTS destination_counts (
         destination text PRIMARY KEY,
@@ -70,6 +74,12 @@ def create_schema(session):
     log.info("Creating model schema")
     session.execute(CREATE_FLIGHTS_DATA_TABLE)
     session.execute(CREATE_DESTINATION_COUNTS)
+
+def insert_data(session):
+    create_keyspace(session, "proyecto", 1)
+    create_schema(session)
+    session.execute(COPY_DATA_FROM_CSV)
+
 
 
 def get_airports_food_service(session):

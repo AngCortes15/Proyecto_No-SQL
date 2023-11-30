@@ -51,10 +51,11 @@ def cassandra_menu():
 
     def print_menu():
         mm_options = {
-            1: "Show recommended airports",
-            2: "Show all airports",
-            3: "Show passengers per airport",
-            4: "Exit",
+            1: "Fill data",
+            2: "Show recommended airports",
+            3: "Show all airports",
+            4: "Show passengers per airport",
+            5: "Exit",
         }
         for key in mm_options.keys():
             print(key, '--', mm_options[key])
@@ -72,18 +73,19 @@ def cassandra_menu():
 
         option = 1
 
-        while(option != 4):
+        while(option != 5):
             print_menu()
             option = int(input('Enter your choice: '))
             if option == 1:
-                cassandra_model.get_airports_food_service(session)
+                cassandra_model.insert_data(session)
             if option == 2:
-                cassandra_model.get_all_airports_passengers(session)
+                cassandra_model.get_airports_food_service(session)
             if option == 3:
+                cassandra_model.get_all_airports_passengers(session)
+            if option == 4:
                 cassandra_model.get_passengers_per_airport(session)
     
     main_cassandra()
-
 
 def mongo_menu():
     mom_options = {
@@ -159,7 +161,9 @@ def dgraph_menu():
                 person = input("Introduce id: ")
                 dgraph_model.delete_person(client, person)
             if option == 6:
-                dgraph_model.buscarTodos(client)
+                first_month = input("Introduce first month: ")
+                second_month = input("Introduce second month: ")
+                dgraph_model.buscarTodos(client, first_month, second_month)
             if option == 4:
                 dgraph_model.drop_all(client)
             if option == 5:
